@@ -8,6 +8,7 @@ import {
   Button,
 } from 'react-native';
 
+import firebase from '../config/fbConfig';
 import InputWithValidation from '../components/InputWithValidation';
 import bgImage from '../images/background.jpg';
 import logo from '../images/logo.png';
@@ -32,33 +33,51 @@ class SignUp extends React.Component {
     });
   };
 
-  handleSignUpPress = () => {
+  validateInputs = () => {
     const {email, username, phoneNumber, password} = this.state;
-    const newErrors = {};
+    const errors = {};
 
     if (!email) {
-      newErrors.email = 'Email is required';
+      errors.email = 'Email is required';
     } else if (!validateEmail(email)) {
-      newErrors.email = 'Email is incorrect';
+      errors.email = 'Email is incorrect';
     }
 
     if (!username) {
-      newErrors.username = 'Username is required';
+      errors.username = 'Username is required';
     }
 
     if (!phoneNumber) {
-      newErrors.phoneNumber = 'Phone number is required';
+      errors.phoneNumber = 'Phone number is required';
     } else if (!validatePhoneNumber(phoneNumber)) {
-      newErrors.phoneNumber = 'Phone number is incorrect';
+      errors.phoneNumber = 'Phone number is incorrect';
     }
 
     if (!password) {
-      newErrors.password = 'Password is required';
+      errors.password = 'Password is required';
     } else if (!validatePassword(password)) {
-      newErrors.password = 'Password must be at least 8 characters long';
+      errors.password = 'Password must be at least 8 characters long';
     }
 
-    this.setState({errors: newErrors});
+    return errors;
+  };
+
+  handleSignUpPress = async () => {
+    const {email, password, username} = this.state;
+    const errors = this.validateInputs();
+    this.setState({errors});
+
+    if (Object.keys(errors).length !== 0) {
+      return;
+    }
+
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+      this.props.navigation.navigate('main', {username});
+    } catch ({message}) {
+      alert(`Error: ${message}`);
+    }
   };
 
   handleLinkPress = () => {
@@ -88,6 +107,7 @@ class SignUp extends React.Component {
           onValueChange={this.handleValueChange}
           icon={'user'}
           errorMessage={errors.username}
+          autoCapitalize="sentences"
         />
         <InputWithValidation
           name="phoneNumber"
@@ -95,6 +115,7 @@ class SignUp extends React.Component {
           onValueChange={this.handleValueChange}
           icon={'phone'}
           errorMessage={errors.phoneNumber}
+          keyboardType="numeric"
         />
         <InputWithValidation
           name="password"

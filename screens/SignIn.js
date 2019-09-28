@@ -8,6 +8,7 @@ import {
   Button,
 } from 'react-native';
 
+import firebase from '../config/fbConfig';
 import InputWithValidation from '../components/InputWithValidation';
 import bgImage from '../images/background.jpg';
 import logo from '../images/logo.png';
@@ -15,7 +16,7 @@ import {validatePassword} from '../helpers/validators';
 
 class SignIn extends React.Component {
   state = {
-    username: '',
+    email: '',
     password: '',
     errors: {},
   };
@@ -26,21 +27,39 @@ class SignIn extends React.Component {
     });
   };
 
-  handleSignInPress = () => {
-    const {username, password} = this.state;
-    const newErrors = {};
+  validateInputs = () => {
+    const {email, password} = this.state;
+    const errors = {};
 
-    if (!username) {
-      newErrors.username = 'Username is required';
+    if (!email) {
+      errors.email = 'Username is required';
     }
 
     if (!password) {
-      newErrors.password = 'Password is required';
+      errors.password = 'Password is required';
     } else if (!validatePassword(password)) {
-      newErrors.password = 'Password must be at least 8 characters long';
+      errors.password = 'Password must be at least 8 characters long';
     }
 
-    this.setState({errors: newErrors});
+    return errors;
+  };
+
+  handleSignInPress = async () => {
+    const {email, password} = this.state;
+    const errors = this.validateInputs();
+    this.setState({errors});
+
+    if (Object.keys(errors).length !== 0) {
+      return;
+    }
+
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+
+      this.props.navigation.navigate('main');
+    } catch ({message}) {
+      alert(`Error ${message}`);
+    }
   };
 
   handleLinkPress = () => {
@@ -48,7 +67,7 @@ class SignIn extends React.Component {
   };
 
   render() {
-    const {username, password, errors} = this.state;
+    const {email, password, errors} = this.state;
 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -58,11 +77,11 @@ class SignIn extends React.Component {
         </View>
 
         <InputWithValidation
-          name="username"
-          value={username}
+          name="email"
+          value={email}
           onValueChange={this.handleValueChange}
-          icon={'user'}
-          errorMessage={errors.username}
+          icon={'envelope'}
+          errorMessage={errors.email}
         />
         <InputWithValidation
           name="password"

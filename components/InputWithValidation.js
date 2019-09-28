@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {capitalize} from '../helpers/parsers';
 
 export default inputWithValidation = props => {
-  const {name, value, onValueChange, icon, isPassword, errorMessage} = props;
+  const {name, value, onValueChange, icon, isPassword, errorMessage, ...rest} = props;
   const placeholder = capitalize(name);
 
   handleChange = value => {
@@ -27,6 +27,7 @@ export default inputWithValidation = props => {
           autoCapitalize="none"
           underlineColorAndroid="transparent"
           value={value}
+          {...rest}
         />
       </View>
       {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
@@ -53,7 +54,6 @@ const styles = StyleSheet.create({
   input: {
     height: 48,
     flex: 1,
-    paddingRight: 50,
     marginLeft: 8,
     fontSize: 16,
     color: '#fffa',
