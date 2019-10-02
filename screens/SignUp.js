@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -6,26 +6,31 @@ import {
   Image,
   ImageBackground,
   Button,
-} from 'react-native';
+} from "react-native";
 
-import firebase from '../config/fbConfig';
-import InputWithValidation from '../components/InputWithValidation';
-import bgImage from '../images/background.jpg';
-import logo from '../images/logo.png';
+import firebase from "../config/fbConfig";
+import InputWithValidation from "../components/InputWithValidation";
+import bgImage from "../images/background.jpg";
+import logo from "../images/logo.png";
 import {
   validateEmail,
   validatePhoneNumber,
   validatePassword,
-} from '../helpers/validators';
+} from "../helpers/validators";
+import Routes from "../consts/routes";
 
 class SignUp extends React.Component {
-  state = {
-    email: '',
-    username: '',
-    phoneNumber: '',
-    password: '',
-    errors: {},
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "",
+      username: "",
+      phoneNumber: "",
+      password: "",
+      errors: {},
+    };
+  }
 
   handleValueChange = (name, value) => {
     this.setState({
@@ -38,25 +43,25 @@ class SignUp extends React.Component {
     const errors = {};
 
     if (!email) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
     } else if (!validateEmail(email)) {
-      errors.email = 'Email is incorrect';
+      errors.email = "Email is incorrect";
     }
 
     if (!username) {
-      errors.username = 'Username is required';
+      errors.username = "Username is required";
     }
 
     if (!phoneNumber) {
-      errors.phoneNumber = 'Phone number is required';
+      errors.phoneNumber = "Phone number is required";
     } else if (!validatePhoneNumber(phoneNumber)) {
-      errors.phoneNumber = 'Phone number is incorrect';
+      errors.phoneNumber = "Phone number is incorrect";
     }
 
     if (!password) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
     } else if (!validatePassword(password)) {
-      errors.password = 'Password must be at least 8 characters long';
+      errors.password = "Password must be at least 8 characters long";
     }
 
     return errors;
@@ -72,16 +77,20 @@ class SignUp extends React.Component {
     }
 
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const {user} = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
 
-      this.props.navigation.navigate('main', {username});
+      await user.updateProfile({displayName: username});
+
+      this.props.navigation.navigate(Routes.MAIN);
     } catch ({message}) {
       alert(`Error: ${message}`);
     }
   };
 
   handleLinkPress = () => {
-    this.props.navigation.navigate('signIn');
+    this.props.navigation.navigate(Routes.SIGN_IN);
   };
 
   render() {
@@ -93,19 +102,18 @@ class SignUp extends React.Component {
           <Image source={logo} style={styles.logo} />
           <Text style={styles.logoText}>KiLo app</Text>
         </View>
-
         <InputWithValidation
           name="email"
           value={email}
           onValueChange={this.handleValueChange}
-          icon={'envelope'}
+          icon="envelope"
           errorMessage={errors.email}
         />
         <InputWithValidation
           name="username"
           value={username}
           onValueChange={this.handleValueChange}
-          icon={'user'}
+          icon="user"
           errorMessage={errors.username}
           autoCapitalize="sentences"
         />
@@ -113,7 +121,7 @@ class SignUp extends React.Component {
           name="phoneNumber"
           value={phoneNumber}
           onValueChange={this.handleValueChange}
-          icon={'phone'}
+          icon="phone"
           errorMessage={errors.phoneNumber}
           keyboardType="numeric"
         />
@@ -121,11 +129,10 @@ class SignUp extends React.Component {
           name="password"
           value={password}
           onValueChange={this.handleValueChange}
-          icon={'lock'}
+          icon="lock"
           isPassword={true}
           errorMessage={errors.password}
         />
-
         <View style={styles.submitButton}>
           <Button
             color="#222"
@@ -133,9 +140,8 @@ class SignUp extends React.Component {
             onPress={this.handleSignUpPress}
           />
         </View>
-
         <Text style={styles.formBottom}>
-          Don't have an account yet?{' '}
+          Don't have an account yet?{" "}
           <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>
             Sign in
           </Text>
@@ -148,40 +154,46 @@ class SignUp extends React.Component {
 const styles = StyleSheet.create({
   backgroundContainer: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
+
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
+
   logo: {
     width: 120,
     height: 120,
   },
+
   logoText: {
-    color: 'white',
+    color: "white",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
     marginBottom: 20,
   },
+
   submitButton: {
     width: 200,
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
     marginTop: 2,
   },
+
   formBottom: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginTop: 12,
   },
+
   refToSignIn: {
-    color: '#ccc',
-    textDecorationLine: 'underline',
+    color: "#ccc",
+    textDecorationLine: "underline",
   },
 });
 
