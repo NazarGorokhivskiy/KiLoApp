@@ -3,7 +3,6 @@ import {View, Text, Button, StyleSheet} from "react-native";
 
 import firebase from "../config/fbConfig";
 import Routes from "../consts/routes";
-import {AuthContext} from "../contexts";
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -12,11 +11,6 @@ export default class Main extends React.Component {
     this.state = {
       username: "",
     };
-  }
-
-  componentDidMount() {
-    const username = "User";
-    this.setState({username});
   }
 
   handleSignOutPress = async () => {
@@ -32,23 +26,18 @@ export default class Main extends React.Component {
 
   render() {
     return (
-      <AuthContext.Consumer>
-        {context => (
-          <View style={styles.backgroundContainer}>
-            <Text
-              style={
-                styles.heading
-              }>{`Welcome, ${context.username}`}</Text>
-            <View style={styles.submitButton}>
-              <Button
-                color="#222"
-                title="Sign out"
-                onPress={this.handleSignOutPress}
-              />
-            </View>
-          </View>
-        )}
-      </AuthContext.Consumer>
+      <View style={styles.backgroundContainer}>
+        <Text style={styles.heading}>{`Welcome, ${
+          firebase.auth().currentUser.displayName
+        }`}</Text>
+        <View style={styles.submitButton}>
+          <Button
+            color="#222"
+            title="Sign out"
+            onPress={this.handleSignOutPress}
+          />
+        </View>
+      </View>
     );
   }
 }
