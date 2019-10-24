@@ -3,22 +3,14 @@ import {SafeAreaView, StyleSheet, StatusBar} from "react-native";
 
 import AppNavigator from "./navigation/AppNavigator";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <StatusBar barStyle="light-content" />
-        <SafeAreaView style={styles.container}>
-          <AppNavigator />
-        </SafeAreaView>
-      </Fragment>
-    );
-  }
-}
+const App = props => (
+  <Fragment>
+    <StatusBar barStyle="light-content" />
+    <SafeAreaView style={styles.container}>
+      <AppNavigator />
+    </SafeAreaView>
+  </Fragment>
+);
 
 const styles = StyleSheet.create({
   container: {

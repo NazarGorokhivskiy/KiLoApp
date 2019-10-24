@@ -19,7 +19,6 @@ export default class Main extends React.Component {
 
       this.props.navigation.navigate(Routes.SIGN_IN);
     } catch (e) {
-      console.error(e);
       alert("Couldn't sign out");
     }
   };

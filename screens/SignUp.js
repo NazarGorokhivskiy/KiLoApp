@@ -141,7 +141,7 @@ class SignUp extends React.Component {
           />
         </View>
         <Text style={styles.formBottom}>
-          Don't have an account yet?{" "}
+          Don't have an account yet?
           <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>
             Sign in
           </Text>
