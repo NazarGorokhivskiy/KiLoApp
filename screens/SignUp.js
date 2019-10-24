@@ -17,7 +17,7 @@ import {
   validatePhoneNumber,
   validatePassword,
 } from "../helpers/validators";
-import Routes from "../consts/routes";
+import ROUTES from "../consts/routes";
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -83,14 +83,14 @@ class SignUp extends React.Component {
 
       await user.updateProfile({displayName: username});
 
-      this.props.navigation.navigate(Routes.MAIN);
+      this.props.navigation.navigate(ROUTES.MAIN);
     } catch ({message}) {
       alert(`Error: ${message}`);
     }
   };
 
   handleLinkPress = () => {
-    this.props.navigation.navigate(Routes.SIGN_IN);
+    this.props.navigation.navigate(ROUTES.SIGN_IN);
   };
 
   render() {

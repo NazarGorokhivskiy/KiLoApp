@@ -13,7 +13,7 @@ import InputWithValidation from "../components/InputWithValidation";
 import bgImage from "../images/background.jpg";
 import logo from "../images/logo.png";
 import {validatePassword} from "../helpers/validators";
-import Routes from "../consts/routes";
+import ROUTES from "../consts/routes";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -61,14 +61,14 @@ class SignIn extends React.Component {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
 
-      this.props.navigation.navigate(Routes.MAIN);
+      this.props.navigation.navigate(ROUTES.MAIN);
     } catch ({message}) {
       alert(`Error ${message}`);
     }
   };
 
   handleLinkPress = () => {
-    this.props.navigation.navigate(Routes.SIGN_UP);
+    this.props.navigation.navigate(ROUTES.SIGN_UP);
   };
 
   render() {

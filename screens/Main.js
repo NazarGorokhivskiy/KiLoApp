@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text, Button, StyleSheet} from "react-native";
 
 import firebase from "../config/fbConfig";
-import Routes from "../consts/routes";
+import ROUTES from "../consts/routes";
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class Main extends React.Component {
     try {
       await firebase.auth().signOut();
 
-      this.props.navigation.navigate(Routes.SIGN_IN);
+      this.props.navigation.navigate(ROUTES.SIGN_IN);
     } catch (e) {
       alert("Couldn't sign out");
     }

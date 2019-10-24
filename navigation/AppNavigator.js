@@ -4,7 +4,7 @@ import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import SignUpScreen from "../screens/SignUp";
 import SignInScreen from "../screens/SignIn";
 import MainScreen from "../screens/Main";
-import {signUp} from "../consts/routes";
+import ROUTES from "../consts/routes";
 
 const AppNavigator = createSwitchNavigator(
   {
@@ -13,7 +13,7 @@ const AppNavigator = createSwitchNavigator(
     main: MainScreen,
   },
   {
-    initialRouteName: signUp,
+    initialRouteName: ROUTES.SIGN_UP,
   },
 );
 
