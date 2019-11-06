@@ -6,9 +6,13 @@ import Collapsible from "react-native-collapsible";
 import EmptyImage from "../images/empty.jpg";
 
 export default class ListItem extends React.Component {
-  state = {
-    isCollapsed: true,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isCollapsed: true,
+    };
+  }
 
   render() {
     const { item } = this.props;

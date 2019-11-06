@@ -4,6 +4,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { Snackbar } from "react-native-paper";
 
 import ListItem from "../components/ListItem";
+import { SERVER_API_URL } from "../consts/db";
 
 export default class PanelsList extends Component {
   constructor(props) {
@@ -21,10 +22,9 @@ export default class PanelsList extends Component {
   handleKeyExtractor = item => "" + item.id;
 
   getPanelsInfo = () => {
-    const API_URL = "https://ngorokhivskiy-backend.appspot.com/panel";
     this.setState({ isLoading: true });
 
-    fetch(API_URL)
+    fetch(SERVER_API_URL)
       .then(res => res.json())
       .then(data => {
         this.setState({ data: data.panels });
