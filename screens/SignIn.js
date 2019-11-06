@@ -59,7 +59,9 @@ class SignIn extends React.Component {
     }
 
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(email.trim(), password);
 
       this.props.navigation.navigate(ROUTES.MAIN);
     } catch ({message}) {

@@ -1,6 +1,8 @@
 import React from "react";
-import {View, Text, Button, StyleSheet} from "react-native";
+import { View, Button, StyleSheet } from "react-native";
+import { Appbar } from "react-native-paper";
 
+import PanelsList from "../components/PanelsList";
 import firebase from "../config/fbConfig";
 import ROUTES from "../consts/routes";
 
@@ -8,9 +10,7 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      username: "",
-    };
+    this.state = {};
   }
 
   handleSignOutPress = async () => {
@@ -26,16 +26,11 @@ export default class Main extends React.Component {
   render() {
     return (
       <View style={styles.backgroundContainer}>
-        <Text style={styles.heading}>{`Welcome, ${
-          firebase.auth().currentUser.displayName
-        }`}</Text>
-        <View style={styles.submitButton}>
-          <Button
-            color="#222"
-            title="Sign out"
-            onPress={this.handleSignOutPress}
-          />
-        </View>
+        <Appbar style={styles.appbar}>
+          <Appbar.BackAction onPress={this.handleSignOutPress} />
+          <Appbar.Content title="Panels list" />
+        </Appbar>
+        <PanelsList />
       </View>
     );
   }
@@ -51,14 +46,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
   },
 
-  heading: {
-    color: "white",
-    fontSize: 20,
-  },
-
-  submitButton: {
-    width: 200,
-    marginHorizontal: "auto",
-    marginTop: 16,
+  appbar: {
+    width: "100%",
+    backgroundColor: "black",
   },
 });

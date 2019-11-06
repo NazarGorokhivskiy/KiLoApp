@@ -1,15 +1,16 @@
-import React, {Fragment} from "react";
+import React from "react";
 import {SafeAreaView, StyleSheet, StatusBar} from "react-native";
+import {Provider as PaperProvider} from "react-native-paper";
 
 import AppNavigator from "./navigation/AppNavigator";
 
 const App = props => (
-  <Fragment>
-    <StatusBar barStyle="light-content" />
+  <PaperProvider>
+    <StatusBar backgroundColor="black" barStyle="light-content" />
     <SafeAreaView style={styles.container}>
       <AppNavigator />
     </SafeAreaView>
-  </Fragment>
+  </PaperProvider>
 );
 
 const styles = StyleSheet.create({
