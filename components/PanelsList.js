@@ -26,9 +26,7 @@ export default class PanelsList extends Component {
 
     fetch(SERVER_API_URL)
       .then(res => res.json())
-      .then(data => {
-        this.setState({ data: data.panels });
-      })
+      .then(data => this.setState({ data: data.panels }))
       .catch(e => this.setState({ snackbarMessage: e.message }))
       .finally(() => this.setState({ isLoading: false }));
   };
