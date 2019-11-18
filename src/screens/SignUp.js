@@ -5,11 +5,12 @@ import {
   Text,
   Image,
   ImageBackground,
-  Button,
+  TouchableWithoutFeedback,
 } from "react-native";
 
-import firebase from "../config/fbConfig";
+import Button from "../components/Button";
 import InputWithValidation from "../components/InputWithValidation";
+import firebase from "../config/fbConfig";
 import bgImage from "../images/background.jpg";
 import logo from "../images/logo.png";
 import {
@@ -39,7 +40,7 @@ class SignUp extends React.Component {
   };
 
   validateInputs = () => {
-    const {email, username, phoneNumber, password} = this.state;
+    const { email, username, phoneNumber, password } = this.state;
     const errors = {};
 
     if (!email) {
@@ -68,23 +69,23 @@ class SignUp extends React.Component {
   };
 
   handleSignUpPress = async () => {
-    const {email, password, username} = this.state;
+    const { email, password, username } = this.state;
     const errors = this.validateInputs();
-    this.setState({errors});
+    this.setState({ errors });
 
     if (Object.keys(errors).length !== 0) {
       return;
     }
 
     try {
-      const {user} = await firebase
+      const { user } = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
 
-      await user.updateProfile({displayName: username});
+      await user.updateProfile({ displayName: username });
 
       this.props.navigation.navigate(ROUTES.MAIN);
-    } catch ({message}) {
+    } catch ({ message }) {
       alert(`Error: ${message}`);
     }
   };
@@ -94,7 +95,7 @@ class SignUp extends React.Component {
   };
 
   render() {
-    const {email, username, phoneNumber, password, errors} = this.state;
+    const { email, username, phoneNumber, password, errors } = this.state;
 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -133,19 +134,13 @@ class SignUp extends React.Component {
           isPassword={true}
           errorMessage={errors.password}
         />
-        <View style={styles.submitButton}>
-          <Button
-            color="#222"
-            title="Sign up"
-            onPress={this.handleSignUpPress}
-          />
-        </View>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.formBottom}>Already have an account?</Text>
+        <Button text="Sign up" onPress={this.handleSignUpPress} />
+        <Text style={styles.formBottom}>
+          Already have an account?{" "}
           <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>
             Sign in
           </Text>
-        </View>
+        </Text>
       </ImageBackground>
     );
   }
@@ -177,32 +172,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  submitButton: {
-    width: 200,
-    marginHorizontal: "auto",
-    marginTop: 2,
-  },
-
-  bottomContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-end",
-  },
-
   formBottom: {
-    color: "white",
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#ccc",
     textAlign: "center",
     marginTop: 12,
   },
 
   refToSignIn: {
-    color: "#ccc",
-    fontSize: 16,
+    color: "white",
     fontWeight: "bold",
-    textDecorationLine: "underline",
-    marginLeft: 5,
+    paddingLeft: 10,
   },
 });
 

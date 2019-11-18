@@ -5,7 +5,7 @@ import {
   Text,
   Image,
   ImageBackground,
-  Button,
+  TouchableHighlight,
 } from "react-native";
 
 import firebase from "../config/fbConfig";
@@ -14,6 +14,7 @@ import bgImage from "../images/background.jpg";
 import logo from "../images/logo.png";
 import { validatePassword } from "../helpers/validators";
 import ROUTES from "../consts/routes";
+import Button from "../components/Button";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -95,13 +96,11 @@ class SignIn extends React.Component {
           isPassword={true}
           errorMessage={errors.password}
         />
-        <View style={styles.submitButton}>
-          <Button
-            color="#222"
-            title="Sign In"
-            onPress={this.handleSignInPress}
-          />
-        </View>
+        <Button
+          style={styles.submitButton}
+          text="Sign in"
+          onPress={this.handleSignInPress}
+        />
         <Text style={styles.formBottom}>
           First time?{" "}
           <Text style={styles.refToSignUp} onPress={this.handleLinkPress}>
@@ -139,23 +138,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  submitButton: {
-    width: 200,
-    marginHorizontal: "auto",
-    marginTop: 2,
-  },
-
   formBottom: {
-    color: "white",
+    color: "#ccc",
     fontSize: 16,
-    fontWeight: "bold",
     textAlign: "center",
     marginTop: 12,
   },
 
   refToSignUp: {
-    color: "#ccc",
-    textDecorationLine: "underline",
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
