@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Card, Title } from "react-native-paper";
 import Collapsible from "react-native-collapsible";
 
-import EmptyImage from "../images/empty.jpg";
+import emptyImage from "../images/empty.jpg";
 
 export default class ListItem extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class ListItem extends React.Component {
     return (
       <Card style={styles.cardContainer}>
         <Card.Content style={styles.content}>
-          <Card.Cover source={item.image ? { uri: item.image } : EmptyImage} />
+          <Card.Cover source={item.image ? { uri: item.image } : emptyImage} />
           <View style={styles.textContent}>
             <Title style={styles.header}>{item.name}</Title>
             <TouchableWithoutFeedback

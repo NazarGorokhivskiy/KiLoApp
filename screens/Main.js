@@ -7,12 +7,6 @@ import firebase from "../config/fbConfig";
 import ROUTES from "../consts/routes";
 
 export default class Main extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-
   handleSignOutPress = async () => {
     try {
       await firebase.auth().signOut();

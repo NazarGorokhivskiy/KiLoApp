@@ -13,7 +13,7 @@ const AppNavigator = createSwitchNavigator(
     main: MainScreen,
   },
   {
-    initialRouteName: ROUTES.MAIN,
+    initialRouteName: ROUTES.SIGN_IN,
   },
 );
 

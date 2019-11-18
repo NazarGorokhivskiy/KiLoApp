@@ -17,7 +17,7 @@ export default class PanelsList extends Component {
     };
   }
 
-  handleRenderItem = ({ item }) => <ListItem item={item} />;
+  renderListItem = ({ item }) => <ListItem item={item} />;
 
   handleKeyExtractor = item => "" + item.id;
 
@@ -29,30 +29,22 @@ export default class PanelsList extends Component {
       .then(data => {
         this.setState({ data: data.panels });
       })
-      .catch(e => {
-        this.setState({
-          snackbarMessage: e.message,
-        });
-      })
+      .catch(e => this.setState({ snackbarMessage: e.message }))
       .finally(() => this.setState({ isLoading: false }));
   };
 
-  componentDidMount() {
-    this.unsubscribeFromNetInfo = NetInfo.addEventListener(state => {
-      if (state.isConnected) {
-        this.getPanelsInfo();
-      } else {
-        this.setState({ snackbarMessage: "No internet connection" });
-      }
-    });
+  showList = state => {
+    if (state.isConnected) {
+      this.getPanelsInfo();
+    } else {
+      this.setState({ snackbarMessage: "No internet connection" });
+    }
+  };
 
-    NetInfo.fetch().then(state => {
-      if (state.isConnected) {
-        this.getPanelsInfo();
-      } else {
-        this.setState({ snackbarMessage: "No internet connection" });
-      }
-    });
+  componentDidMount() {
+    this.unsubscribeFromNetInfo = NetInfo.addEventListener(this.showList);
+
+    NetInfo.fetch().then(this.showList);
   }
 
   componentWillUnmount() {
@@ -69,7 +61,7 @@ export default class PanelsList extends Component {
           data={data}
           refreshing={isLoading}
           onRefresh={this.getPanelsInfo}
-          renderItem={this.handleRenderItem}
+          renderItem={this.renderListItem}
           keyExtractor={this.handleKeyExtractor}
         />
         <Snackbar

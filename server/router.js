@@ -15,21 +15,15 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const {
-      name,
-      quantity,
-      department,
-      producer,
-      market_adress,
-      image
-    } = req.body;
+    const body = req.body;
+
     const panel = {
-      name,
-      quantity,
-      department,
-      producer,
-      market_adress,
-      image
+      name: body.name,
+      quantity: body.quantity,
+      department: body.department,
+      producer: body.producer,
+      market_adress: body.market_adress,
+      image: body.image,
     };
 
     const newPanel = await Panel.create(panel);
@@ -43,26 +37,18 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const {
-      name,
-      quantity,
-      department,
-      producer,
-      market_adress,
-      image
-    } = req.body;
+    const body = req.body;
+
     const panel = {
-      name,
-      quantity,
-      department,
-      producer,
-      market_adress,
-      image
+      name: body.name,
+      quantity: body.quantity,
+      department: body.department,
+      producer: body.producer,
+      market_adress: body.market_adress,
+      image: body.image,
     };
 
-    const updatedPanel = await Panel.update(panel, {
-      where: { id }
-    });
+    const updatedPanel = await Panel.update(panel, { where: { id } });
 
     res.json({ updatedPanel });
   } catch (e) {
@@ -74,9 +60,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
 
-    await Panel.destroy({
-      where: { id }
-    });
+    await Panel.destroy({ where: { id } });
 
     res.json({ message: "Panel was deleted successfully" });
   } catch (e) {
