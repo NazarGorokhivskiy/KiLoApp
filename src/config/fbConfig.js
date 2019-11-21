@@ -5,6 +5,7 @@ const config = {
   authDomain: "mobiledevelopment-cdcc7.firebaseapp.com",
   databaseURL: "https://mobiledevelopment-cdcc7.firebaseio.com",
   projectId: "mobiledevelopment-cdcc7",
+  storageBucket: "gs://mobiledevelopment-cdcc7.appspot.com",
   messagingSenderId: "513088718976",
   appId: "1:513088718976:web:9b85d8dfeb2b5325653e65",
   measurementId: "G-L6TP1S4ZS2",

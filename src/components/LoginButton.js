@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ImageBackground,
-  TouchableHighlight,
-} from "react-native";
+import { StyleSheet, Text, TouchableHighlight } from "react-native";
 
-export default function Button({ onPress, text }) {
+export default function LoginButton({ onPress, text }) {
   return (
     <TouchableHighlight
       style={styles.container}
@@ -30,7 +23,7 @@ const styles = StyleSheet.create({
 
   text: {
     color: "white",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     textTransform: "uppercase",
     textAlign: "center",

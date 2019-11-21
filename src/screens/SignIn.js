@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ImageBackground,
-  TouchableHighlight,
-} from "react-native";
+import { StyleSheet, View, Text, Image, ImageBackground } from "react-native";
 
 import firebase from "../config/fbConfig";
 import InputWithValidation from "../components/InputWithValidation";
@@ -14,15 +7,15 @@ import bgImage from "../images/background.jpg";
 import logo from "../images/logo.png";
 import { validatePassword } from "../helpers/validators";
 import ROUTES from "../consts/routes";
-import Button from "../components/Button";
+import LoginButton from "../components/LoginButton";
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
-      password: "",
+      email: "nazarius@keen.com",
+      password: "12345678",
       errors: {},
     };
   }
@@ -96,7 +89,7 @@ class SignIn extends React.Component {
           isPassword={true}
           errorMessage={errors.password}
         />
-        <Button
+        <LoginButton
           style={styles.submitButton}
           text="Sign in"
           onPress={this.handleSignInPress}

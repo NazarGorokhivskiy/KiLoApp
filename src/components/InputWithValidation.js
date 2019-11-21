@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";

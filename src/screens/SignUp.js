@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ImageBackground,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { StyleSheet, View, Text, Image, ImageBackground } from "react-native";
 
-import Button from "../components/Button";
+import LoginButton from "../components/LoginButton";
 import InputWithValidation from "../components/InputWithValidation";
 import firebase from "../config/fbConfig";
 import bgImage from "../images/background.jpg";
@@ -134,7 +127,7 @@ class SignUp extends React.Component {
           isPassword={true}
           errorMessage={errors.password}
         />
-        <Button text="Sign up" onPress={this.handleSignUpPress} />
+        <LoginButton text="Sign up" onPress={this.handleSignUpPress} />
         <Text style={styles.formBottom}>
           Already have an account?{" "}
           <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>
