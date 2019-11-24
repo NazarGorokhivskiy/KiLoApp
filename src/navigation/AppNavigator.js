@@ -7,9 +7,9 @@ import ROUTES from "../consts/routes";
 
 const AppNavigator = createSwitchNavigator(
   {
-    signIn: SignInScreen,
-    signUp: SignUpScreen,
-    main: BottomTabNavigator,
+    [ROUTES.SIGN_IN]: SignInScreen,
+    [ROUTES.SIGN_UP]: SignUpScreen,
+    [ROUTES.MAIN]: BottomTabNavigator,
   },
   {
     initialRouteName: ROUTES.SIGN_IN,

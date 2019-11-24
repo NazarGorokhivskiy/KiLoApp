@@ -8,14 +8,15 @@ import logo from "../images/logo.png";
 import { validatePassword } from "../helpers/validators";
 import ROUTES from "../consts/routes";
 import LoginButton from "../components/LoginButton";
+import { ScrollView } from "react-native-gesture-handler";
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "nazarius@keen.com",
-      password: "12345678",
+      email: "",
+      password: "",
       errors: {},
     };
   }
@@ -70,36 +71,46 @@ class SignIn extends React.Component {
 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.logo} />
-          <Text style={styles.logoText}>KiLo app</Text>
-        </View>
-        <InputWithValidation
-          name="email"
-          value={email}
-          onValueChange={this.handleValueChange}
-          icon="envelope"
-          errorMessage={errors.email}
-        />
-        <InputWithValidation
-          name="password"
-          value={password}
-          onValueChange={this.handleValueChange}
-          icon="lock"
-          isPassword={true}
-          errorMessage={errors.password}
-        />
-        <LoginButton
-          style={styles.submitButton}
-          text="Sign in"
-          onPress={this.handleSignInPress}
-        />
-        <Text style={styles.formBottom}>
-          First time?{" "}
-          <Text style={styles.refToSignUp} onPress={this.handleLinkPress}>
-            Sign up
-          </Text>
-        </Text>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={styles.container}>
+            <View style={styles.top}>
+              <Image source={logo} style={styles.logo} />
+            </View>
+            <View style={styles.center}>
+              <Text style={styles.logoText}>Welcome to KiLo</Text>
+              <InputWithValidation
+                style={styles.input}
+                name="email"
+                value={email}
+                onValueChange={this.handleValueChange}
+                icon="envelope"
+                errorMessage={errors.email}
+              />
+              <InputWithValidation
+                style={styles.input}
+                name="password"
+                value={password}
+                onValueChange={this.handleValueChange}
+                icon="lock"
+                isPassword={true}
+                errorMessage={errors.password}
+              />
+            </View>
+            <View style={styles.bottom}>
+              <LoginButton
+                style={styles.submitButton}
+                text="Sign in"
+                onPress={this.handleSignInPress}
+              />
+              <Text style={styles.formBottom}>
+                First time?{" "}
+                <Text style={styles.refToSignUp} onPress={this.handleLinkPress}>
+                  Sign up
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
@@ -110,8 +121,30 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    justifyContent: "center",
+  },
+
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
     alignItems: "center",
+  },
+
+  top: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+
+  center: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  bottom: {
+    flex: 1,
+    justifyContent: "center",
+    paddingBottom: "5%",
   },
 
   logoContainer: {
@@ -129,6 +162,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 20,
+  },
+
+  input: {
+    marginBottom: 15,
   },
 
   formBottom: {

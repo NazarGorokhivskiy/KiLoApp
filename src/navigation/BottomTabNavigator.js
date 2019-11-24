@@ -2,8 +2,8 @@ import React from "react";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import ROUTES from '../consts/routes';
-import ListStackNavigator from './ListStackNavigator';
+import ROUTES from "../consts/routes";
+import ListStackNavigator from "./ListStackNavigator";
 import ProfileScreen from "../screens/Profile";
 import EmptyScreen from "../screens/Empty";
 
@@ -13,7 +13,7 @@ const TabBarIcon = ({ name, focused }) => (
 
 export default BottomTabNavigator = createMaterialBottomTabNavigator(
   {
-    list: {
+    [ROUTES.LIST]: {
       screen: ListStackNavigator,
       navigationOptions: {
         tabBarLabel: "List",
@@ -22,7 +22,7 @@ export default BottomTabNavigator = createMaterialBottomTabNavigator(
         ),
       },
     },
-    emptyTab: {
+    [ROUTES.EMPTY]: {
       screen: EmptyScreen,
       navigationOptions: {
         title: "Empty",
@@ -31,7 +31,7 @@ export default BottomTabNavigator = createMaterialBottomTabNavigator(
         ),
       },
     },
-    profile: {
+    [ROUTES.PROFILE]: {
       screen: ProfileScreen,
       navigationOptions: {
         title: "My profile",
@@ -44,7 +44,7 @@ export default BottomTabNavigator = createMaterialBottomTabNavigator(
   {
     sceneAnimationEnabled: false,
     backBehavior: "history",
-    initialRouteName: ROUTES.PROFILE,
+    initialRouteName: ROUTES.LIST,
     activeColor: "#f0edf6",
     inactiveColor: "#ccc",
     barStyle: { backgroundColor: "#111" },

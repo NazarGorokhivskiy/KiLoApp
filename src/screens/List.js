@@ -17,6 +17,9 @@ export default class List extends React.Component {
     }
   };
 
+  handleOpenPanelDetails = panel =>
+    this.props.navigation.navigate(ROUTES.DETAILS, { panel });
+
   render() {
     return (
       <View style={styles.backgroundContainer}>
@@ -24,7 +27,7 @@ export default class List extends React.Component {
           <Appbar.BackAction onPress={this.handleSignOutPress} />
           <Appbar.Content title="Panels list" />
         </Appbar>
-        <PanelsList />
+        <PanelsList handleOpenPanelDetails={this.handleOpenPanelDetails} />
       </View>
     );
   }

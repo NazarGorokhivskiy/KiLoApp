@@ -9,13 +9,12 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import ImagePicker from "react-native-image-picker";
 
 import TransparentButton from "../components/TransparentButton";
 import emptyImage from "../images/empty.jpg";
 import firebase from "../config/fbConfig";
 import bgImage from "../images/profile_bg.jpg";
-import { uploadImageToFirebase } from "../helpers/fileWorkers";
+import { uploadImageToFirebase, uploadPhotoFromGallery } from "../helpers/util";
 
 export default class Profile extends React.Component {
   constructor(props) {
@@ -30,37 +29,27 @@ export default class Profile extends React.Component {
   }
 
   uploadPhoto = () => {
-    ImagePicker.launchImageLibrary(
-      {
-        noData: true,
-      },
-      photo => {
-        if (photo.uri) {
-          uploadImageToFirebase(photo.uri, "image/jpeg", photo.fileName)
-            .then(resultURL =>
-              firebase.auth().currentUser.updateProfile({
-                photoURL: resultURL,
-              }),
-            )
-            .then(() => {
-              this.setState({ photoURL: firebase.auth().currentUser.photoURL });
-            })
-            .catch(console.error);
-        }
-      },
-    );
+    uploadPhotoFromGallery()
+      .then(photo =>
+        uploadImageToFirebase(photo.uri, "image/jpeg", photo.fileName),
+      )
+      .then(resultURL =>
+        firebase.auth().currentUser.updateProfile({
+          photoURL: resultURL,
+        }),
+      )
+      .then(() => {
+        this.setState({ photoURL: firebase.auth().currentUser.photoURL });
+      })
+      .catch(console.error);
   };
 
-  handleChange = (name, value) => {
-    this.setState({
-      [name]: value,
-    });
-  };
+  handleChange = (name, value) => this.setState({ [name]: value });
 
   handleEditButtonPress = () => this.setState({ isInEditMode: true });
 
   handleSaveProfile = () => {
-    const { userName, email, photoURL } = this.state;
+    const { userName, email } = this.state;
 
     firebase.auth().currentUser.updateEmail(email);
     firebase.auth().currentUser.updateProfile({ displayName: userName });
@@ -158,6 +147,8 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 75,
     marginBottom: 20,
+    borderWidth: 3,
+    borderColor: "white",
   },
 
   title: {

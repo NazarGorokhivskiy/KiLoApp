@@ -15,11 +15,11 @@ export default class ListItem extends React.Component {
   }
 
   render() {
-    const { item } = this.props;
+    const { item, openPanelDetails } = this.props;
     const { isCollapsed } = this.state;
 
     return (
-      <Card style={styles.cardContainer}>
+      <Card style={styles.cardContainer} onPress={() => openPanelDetails(item)}>
         <Card.Content style={styles.content}>
           <Card.Cover source={item.image ? { uri: item.image } : emptyImage} />
           <View style={styles.textContent}>

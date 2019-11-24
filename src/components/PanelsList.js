@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  TouchableWithoutFeedback,
+  StyleSheet,
+} from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { Snackbar } from "react-native-paper";
 
@@ -18,7 +23,9 @@ export default class PanelsList extends Component {
     };
   }
 
-  renderListItem = ({ item }) => <ListItem item={item} />;
+  renderListItem = ({ item }) => (
+      <ListItem item={item} openPanelDetails={this.props.handleOpenPanelDetails} />
+  );
 
   handleKeyExtractor = item => "" + item.id;
 
@@ -86,9 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    height: "100%"
   },
 
   list: {

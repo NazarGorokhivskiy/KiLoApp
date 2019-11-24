@@ -13,6 +13,7 @@ const InputWithValidation = props => {
     icon,
     isPassword,
     errorMessage,
+    style,
     ...restProps
   } = props;
   const placeholder = capitalize(name);
@@ -22,7 +23,7 @@ const InputWithValidation = props => {
   };
 
   return (
-    <View style={styles.inputContainer}>
+    <View style={[styles.inputContainer, style]}>
       <View style={styles.innerContainer}>
         {icon && <Icon name={icon} size={28} color={MAIN_DARKER} />}
         <TextInput

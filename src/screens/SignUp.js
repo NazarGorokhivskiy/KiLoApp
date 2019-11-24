@@ -12,6 +12,7 @@ import {
   validatePassword,
 } from "../helpers/validators";
 import ROUTES from "../consts/routes";
+import { ScrollView } from "react-native-gesture-handler";
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -92,48 +93,56 @@ class SignUp extends React.Component {
 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-        <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.logo} />
-          <Text style={styles.logoText}>KiLo app</Text>
-        </View>
-        <InputWithValidation
-          name="email"
-          value={email}
-          onValueChange={this.handleValueChange}
-          icon="envelope"
-          errorMessage={errors.email}
-        />
-        <InputWithValidation
-          name="username"
-          value={username}
-          onValueChange={this.handleValueChange}
-          icon="user"
-          errorMessage={errors.username}
-          autoCapitalize="sentences"
-        />
-        <InputWithValidation
-          name="phoneNumber"
-          value={phoneNumber}
-          onValueChange={this.handleValueChange}
-          icon="phone"
-          errorMessage={errors.phoneNumber}
-          keyboardType="numeric"
-        />
-        <InputWithValidation
-          name="password"
-          value={password}
-          onValueChange={this.handleValueChange}
-          icon="lock"
-          isPassword={true}
-          errorMessage={errors.password}
-        />
-        <LoginButton text="Sign up" onPress={this.handleSignUpPress} />
-        <Text style={styles.formBottom}>
-          Already have an account?{" "}
-          <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>
-            Sign in
-          </Text>
-        </Text>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={styles.container}>
+            <View style={styles.top}>
+              <Image source={logo} style={styles.logo} />
+            </View>
+            <View style={styles.center}>
+              <Text style={styles.logoText}>Join KiLo right now!</Text>
+              <InputWithValidation
+                name="email"
+                value={email}
+                onValueChange={this.handleValueChange}
+                icon="envelope"
+                errorMessage={errors.email}
+              />
+              <InputWithValidation
+                name="username"
+                value={username}
+                onValueChange={this.handleValueChange}
+                icon="user"
+                errorMessage={errors.username}
+                autoCapitalize="sentences"
+              />
+              <InputWithValidation
+                name="phoneNumber"
+                value={phoneNumber}
+                onValueChange={this.handleValueChange}
+                icon="phone"
+                errorMessage={errors.phoneNumber}
+                keyboardType="numeric"
+              />
+              <InputWithValidation
+                name="password"
+                value={password}
+                onValueChange={this.handleValueChange}
+                icon="lock"
+                isPassword={true}
+                errorMessage={errors.password}
+              />
+            </View>
+            <View style={styles.bottom}>
+              <LoginButton text="Sign up" onPress={this.handleSignUpPress} />
+              <Text style={styles.formBottom}>
+                Already have an account?{" "}
+                <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>
+                  Sign in
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
@@ -144,8 +153,30 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    justifyContent: "center",
+  },
+
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
     alignItems: "center",
+  },
+
+  top: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+
+  center: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  bottom: {
+    flex: 1,
+    justifyContent: "center",
+    paddingBottom: "5%",
   },
 
   logoContainer: {
