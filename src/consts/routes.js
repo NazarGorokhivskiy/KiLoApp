@@ -4,6 +4,7 @@ export default {
   SIGN_IN: "signIn",
   LIST: "list",
   DETAILS: "details",
+  ADDING: "adding",
   PROFILE: "profile",
   EMPTY: "emptyTab",
 };

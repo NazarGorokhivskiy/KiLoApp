@@ -20,3 +20,9 @@ export const validatePhoneNumber = value => {
 
   return phoneNumberRegex.test(value);
 };
+
+export const validateText = value => {
+  const specialSymbolsRegex = /[!@#$%^&*().?":+={}|<>]/g;
+
+  return !specialSymbolsRegex.test(value);
+};

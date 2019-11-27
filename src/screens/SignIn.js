@@ -5,7 +5,7 @@ import firebase from "../config/fbConfig";
 import InputWithValidation from "../components/InputWithValidation";
 import bgImage from "../images/background.jpg";
 import logo from "../images/logo.png";
-import { validatePassword } from "../helpers/validators";
+import { validatePassword, validateEmail } from "../helpers/validators";
 import ROUTES from "../consts/routes";
 import LoginButton from "../components/LoginButton";
 import { ScrollView } from "react-native-gesture-handler";
@@ -15,8 +15,8 @@ class SignIn extends React.Component {
     super(props);
 
     this.state = {
-      email: "",
-      password: "",
+      email: "nazargorokhivskiy@gmail.com",
+      password: "11111111",
       errors: {},
     };
   }
@@ -32,7 +32,9 @@ class SignIn extends React.Component {
     const errors = {};
 
     if (!email) {
-      errors.email = "Username is required";
+      errors.email = "Email is required";
+    } else if (!validateEmail(email)) {
+      errors.email = "Email is not correct";
     }
 
     if (!password) {
@@ -49,9 +51,7 @@ class SignIn extends React.Component {
     const errors = this.validateInputs();
     this.setState({ errors });
 
-    if (Object.keys(errors).length !== 0) {
-      return;
-    }
+    if (Object.keys(errors).length !== 0) return;
 
     try {
       await firebase.auth().signInWithEmailAndPassword(email.trim(), password);

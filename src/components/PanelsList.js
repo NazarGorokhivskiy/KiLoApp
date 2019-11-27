@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import {
-  View,
-  FlatList,
-  TouchableWithoutFeedback,
-  StyleSheet,
-} from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
-import { Snackbar } from "react-native-paper";
+import { NavigationEvents } from "react-navigation";
 
 import ListItem from "../components/ListItem";
-import { SERVER_API_URL } from "../consts/db";
+import API from "../helpers/api";
 
 export default class PanelsList extends Component {
   constructor(props) {
@@ -19,12 +14,14 @@ export default class PanelsList extends Component {
       isLoading: false,
       isInternetAvailable: false,
       data: [],
-      snackbarMessage: "",
     };
   }
 
   renderListItem = ({ item }) => (
-      <ListItem item={item} openPanelDetails={this.props.handleOpenPanelDetails} />
+    <ListItem
+      item={item}
+      openPanelDetails={this.props.handleOpenPanelDetails}
+    />
   );
 
   handleKeyExtractor = item => "" + item.id;
@@ -32,10 +29,9 @@ export default class PanelsList extends Component {
   getPanelsInfo = () => {
     this.setState({ isLoading: true });
 
-    fetch(SERVER_API_URL)
-      .then(res => res.json())
+    API.get("panel")
       .then(data => this.setState({ data: data.panels }))
-      .catch(e => this.setState({ snackbarMessage: e.message }))
+      .catch(e => this.props.onErrorAppear(e.message))
       .finally(() => this.setState({ isLoading: false }));
   };
 
@@ -43,7 +39,7 @@ export default class PanelsList extends Component {
     if (this.state.isInternetAvailable) {
       this.getPanelsInfo();
     } else {
-      this.setState({ snackbarMessage: "No internet connection" });
+      this.props.onErrorAppear("No internet connection");
     }
   };
 
@@ -62,10 +58,15 @@ export default class PanelsList extends Component {
   }
 
   render() {
-    const { isLoading, data, snackbarMessage } = this.state;
+    const { isLoading, data } = this.state;
 
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onWillFocus={({ action: { params } }) => {
+            params && params.shouldUpdate && this.showList();
+          }}
+        />
         <FlatList
           style={styles.list}
           data={data}
@@ -74,16 +75,6 @@ export default class PanelsList extends Component {
           renderItem={this.renderListItem}
           keyExtractor={this.handleKeyExtractor}
         />
-        <Snackbar
-          visible={!!snackbarMessage}
-          onDismiss={() => this.setState({ snackbarMessage: "" })}
-          duration={5000}
-          action={{
-            label: "Okay",
-            onPress: () => this.setState({ snackbarMessage: "" }),
-          }}>
-          {snackbarMessage}
-        </Snackbar>
       </View>
     );
   }
@@ -93,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
 
   list: {
