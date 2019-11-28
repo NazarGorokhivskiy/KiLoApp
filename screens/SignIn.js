@@ -12,7 +12,7 @@ import firebase from "../config/fbConfig";
 import InputWithValidation from "../components/InputWithValidation";
 import bgImage from "../images/background.jpg";
 import logo from "../images/logo.png";
-import {validatePassword} from "../helpers/validators";
+import { validatePassword } from "../helpers/validators";
 import ROUTES from "../consts/routes";
 
 class SignIn extends React.Component {
@@ -33,7 +33,7 @@ class SignIn extends React.Component {
   };
 
   validateInputs = () => {
-    const {email, password} = this.state;
+    const { email, password } = this.state;
     const errors = {};
 
     if (!email) {
@@ -50,19 +50,19 @@ class SignIn extends React.Component {
   };
 
   handleSignInPress = async () => {
-    const {email, password} = this.state;
+    const { email, password } = this.state;
     const errors = this.validateInputs();
-    this.setState({errors});
+    this.setState({ errors });
 
     if (Object.keys(errors).length !== 0) {
       return;
     }
 
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      await firebase.auth().signInWithEmailAndPassword(email.trim(), password);
 
       this.props.navigation.navigate(ROUTES.MAIN);
-    } catch ({message}) {
+    } catch ({ message }) {
       alert(`Error ${message}`);
     }
   };
@@ -72,7 +72,7 @@ class SignIn extends React.Component {
   };
 
   render() {
-    const {email, password, errors} = this.state;
+    const { email, password, errors } = this.state;
 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>

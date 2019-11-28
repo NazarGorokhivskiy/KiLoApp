@@ -140,12 +140,12 @@ class SignUp extends React.Component {
             onPress={this.handleSignUpPress}
           />
         </View>
-        <Text style={styles.formBottom}>
-          Don't have an account yet?
+        <View style={styles.bottomContainer}>
+          <Text style={styles.formBottom}>Already have an account?</Text>
           <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>
             Sign in
           </Text>
-        </Text>
+        </View>
       </ImageBackground>
     );
   }
@@ -183,6 +183,12 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 
+  bottomContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+
   formBottom: {
     color: "white",
     fontSize: 16,
@@ -193,7 +199,10 @@ const styles = StyleSheet.create({
 
   refToSignIn: {
     color: "#ccc",
+    fontSize: 16,
+    fontWeight: "bold",
     textDecorationLine: "underline",
+    marginLeft: 5,
   },
 });
 
