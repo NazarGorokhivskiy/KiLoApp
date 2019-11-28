@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Button, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 
 import PanelsList from "../components/PanelsList";
 import firebase from "../config/fbConfig";
 import ROUTES from "../consts/routes";
 
-export default class Main extends React.Component {
+export default class List extends React.Component {
   handleSignOutPress = async () => {
     try {
       await firebase.auth().signOut();
@@ -17,6 +17,9 @@ export default class Main extends React.Component {
     }
   };
 
+  handleOpenPanelDetails = panel =>
+    this.props.navigation.navigate(ROUTES.DETAILS, { panel });
+
   render() {
     return (
       <View style={styles.backgroundContainer}>
@@ -24,7 +27,7 @@ export default class Main extends React.Component {
           <Appbar.BackAction onPress={this.handleSignOutPress} />
           <Appbar.Content title="Panels list" />
         </Appbar>
-        <PanelsList />
+        <PanelsList handleOpenPanelDetails={this.handleOpenPanelDetails} />
       </View>
     );
   }

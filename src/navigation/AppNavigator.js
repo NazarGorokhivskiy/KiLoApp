@@ -1,16 +1,15 @@
-import React from "react";
-import {createAppContainer, createSwitchNavigator} from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
+import BottomTabNavigator from "./BottomTabNavigator";
 import SignUpScreen from "../screens/SignUp";
 import SignInScreen from "../screens/SignIn";
-import MainScreen from "../screens/Main";
 import ROUTES from "../consts/routes";
 
 const AppNavigator = createSwitchNavigator(
   {
-    signIn: SignInScreen,
-    signUp: SignUpScreen,
-    main: MainScreen,
+    [ROUTES.SIGN_IN]: SignInScreen,
+    [ROUTES.SIGN_UP]: SignUpScreen,
+    [ROUTES.MAIN]: BottomTabNavigator,
   },
   {
     initialRouteName: ROUTES.SIGN_IN,

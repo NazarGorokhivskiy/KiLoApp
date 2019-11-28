@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  TouchableWithoutFeedback,
+  StyleSheet,
+} from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { Snackbar } from "react-native-paper";
 
@@ -12,12 +17,15 @@ export default class PanelsList extends Component {
 
     this.state = {
       isLoading: false,
+      isInternetAvailable: false,
       data: [],
       snackbarMessage: "",
     };
   }
 
-  renderListItem = ({ item }) => <ListItem item={item} />;
+  renderListItem = ({ item }) => (
+      <ListItem item={item} openPanelDetails={this.props.handleOpenPanelDetails} />
+  );
 
   handleKeyExtractor = item => "" + item.id;
 
@@ -31,8 +39,8 @@ export default class PanelsList extends Component {
       .finally(() => this.setState({ isLoading: false }));
   };
 
-  showList = state => {
-    if (state.isConnected) {
+  showList = () => {
+    if (this.state.isInternetAvailable) {
       this.getPanelsInfo();
     } else {
       this.setState({ snackbarMessage: "No internet connection" });
@@ -40,9 +48,13 @@ export default class PanelsList extends Component {
   };
 
   componentDidMount() {
-    this.unsubscribeFromNetInfo = NetInfo.addEventListener(this.showList);
+    this.unsubscribeFromNetInfo = NetInfo.addEventListener(state => {
+      this.setState({ isInternetAvailable: state.isConnected });
+    });
 
-    NetInfo.fetch().then(this.showList);
+    NetInfo.fetch().then(state => {
+      this.setState({ isInternetAvailable: state.isConnected }, this.showList);
+    });
   }
 
   componentWillUnmount() {
@@ -58,7 +70,7 @@ export default class PanelsList extends Component {
           style={styles.list}
           data={data}
           refreshing={isLoading}
-          onRefresh={this.getPanelsInfo}
+          onRefresh={this.showList}
           renderItem={this.renderListItem}
           keyExtractor={this.handleKeyExtractor}
         />
@@ -81,9 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    height: "100%"
   },
 
   list: {

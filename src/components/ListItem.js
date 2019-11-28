@@ -15,11 +15,11 @@ export default class ListItem extends React.Component {
   }
 
   render() {
-    const { item } = this.props;
+    const { item, openPanelDetails } = this.props;
     const { isCollapsed } = this.state;
 
     return (
-      <Card style={styles.cardContainer}>
+      <Card style={styles.cardContainer} onPress={() => openPanelDetails(item)}>
         <Card.Content style={styles.content}>
           <Card.Cover source={item.image ? { uri: item.image } : emptyImage} />
           <View style={styles.textContent}>
@@ -28,12 +28,14 @@ export default class ListItem extends React.Component {
               onPress={() => this.setState({ isCollapsed: !isCollapsed })}>
               <Text style={[styles.text, styles.showInfo]}>Show info</Text>
             </TouchableWithoutFeedback>
-            <Collapsible collapsed={isCollapsed}>
+            <Collapsible align="bottom" collapsed={isCollapsed}>
               <View style={styles.collapsedContent}>
                 <Text style={styles.text}>Quantity: {item.quantity}</Text>
                 <Text style={styles.text}>Department: {item.department}</Text>
                 <Text style={styles.text}>Producer: {item.producer}</Text>
-                <Text style={styles.text}>Market address: {item.market_adress}</Text>
+                <Text style={styles.text}>
+                  Market address: {item.market_adress}
+                </Text>
               </View>
             </Collapsible>
           </View>
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
 
   showInfo: {
     marginTop: 10,
-    fontStyle: 'italic'
+    fontStyle: "italic",
   },
 
   textContent: {
@@ -71,6 +73,6 @@ const styles = StyleSheet.create({
   },
 
   collapsedContent: {
-    paddingTop: 10
+    paddingTop: 10,
   },
 });
