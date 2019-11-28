@@ -10,6 +10,17 @@ export default Details = ({ navigation }) => {
     navigation.dispatch(NavigationActions.back());
   };
 
+  const renderImage = image =>
+    image ? (
+      <Image
+        resizeMode={"contain"}
+        source={{ uri: panel.image }}
+        style={styles.image}
+      />
+    ) : (
+      <Caption style={styles.noImage}>No image data</Caption>
+    );
+
   return (
     <View style={styles.backgroundContainer}>
       <Appbar style={styles.appbar}>
@@ -18,15 +29,7 @@ export default Details = ({ navigation }) => {
       </Appbar>
       <ScrollView style={{ width: "100%" }}>
         <View style={styles.container}>
-          {panel.image ? (
-            <Image
-              resizeMode={"contain"}
-              source={{ uri: panel.image }}
-              style={styles.image}
-            />
-          ) : (
-            <Caption style={styles.noImage}>No image data</Caption>
-          )}
+          {renderImage(panel.image)}
           <Caption style={styles.caption}>Title</Caption>
           <Text style={styles.text}>{panel.name}</Text>
           <Caption style={styles.caption}>Quantity</Caption>

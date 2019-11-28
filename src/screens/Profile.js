@@ -9,12 +9,13 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Snackbar } from "react-native-paper";
 
 import TransparentButton from "../components/TransparentButton";
 import emptyImage from "../images/empty.jpg";
-import firebase from "../config/fbConfig";
+import ErrorSnackbar from "../components/ErrorSnackbar";
 import bgImage from "../images/profile_bg.jpg";
-import { uploadImageToFirebase, uploadPhotoFromGallery } from "../helpers/util";
+import { uploadImageToFirebase, uploadPhotoFromGallery, getFirebaseUser } from "../helpers/util";
 
 export default class Profile extends React.Component {
   constructor(props) {
@@ -25,40 +26,68 @@ export default class Profile extends React.Component {
       userName: "",
       email: "",
       photoURL: "",
+      snackbarMessage: "",
     };
   }
 
   uploadPhoto = () => {
     uploadPhotoFromGallery()
-      .then(photo =>
-        uploadImageToFirebase(photo.uri, "image/jpeg", photo.fileName),
-      )
-      .then(resultURL =>
-        firebase.auth().currentUser.updateProfile({
-          photoURL: resultURL,
-        }),
-      )
+      .then(photo => uploadImageToFirebase(photo.uri, "image/jpeg", photo.fileName))
+      .then(resultURL => getFirebaseUser().updateProfile({ photoURL: resultURL }))
       .then(() => {
-        this.setState({ photoURL: firebase.auth().currentUser.photoURL });
+        this.setState({ photoURL: getFirebaseUser().photoURL });
       })
-      .catch(console.error);
+      .catch(() => handleErrorAppear(console.error));
   };
 
-  handleChange = (name, value) => this.setState({ [name]: value });
+  handleInputChange = (name, value) => this.setState({ [name]: value });
 
   handleEditButtonPress = () => this.setState({ isInEditMode: true });
 
   handleSaveProfile = () => {
     const { userName, email } = this.state;
 
-    firebase.auth().currentUser.updateEmail(email);
-    firebase.auth().currentUser.updateProfile({ displayName: userName });
+    getFirebaseUser().updateEmail(email);
+    getFirebaseUser().updateProfile({ displayName: userName });
 
     this.setState({ isInEditMode: false });
   };
 
+  handleErrorAppear = message => {
+    this.setState({ snackbarMessage: message });
+  };
+
+  renderProfileContent = (isInEditMode, { userName, email, photoURL }) => {
+    return isInEditMode ? (
+      <React.Fragment>
+        <TouchableWithoutFeedback onPress={this.uploadPhoto}>
+          <View>
+            <Image source={photoURL ? { uri: photoURL } : emptyImage} style={styles.avatar} />
+            <Icon style={styles.selectImageIcon} name="upload" size={25} color="black" />
+          </View>
+        </TouchableWithoutFeedback>
+        <TextInput
+          style={styles.titleInput}
+          value={userName}
+          onChangeText={value => this.handleInputChange("userName", value)}
+        />
+        <TextInput
+          style={styles.subtitleInput}
+          value={email}
+          onChangeText={value => this.handleInputChange("email", value)}
+        />
+      </React.Fragment>
+    ) : (
+      <React.Fragment>
+        <Image source={photoURL ? { uri: photoURL } : emptyImage} style={styles.avatar} />
+        <Text style={styles.title}>{userName}</Text>
+        <Text style={styles.subtitle}>{email}</Text>
+      </React.Fragment>
+    );
+  };
+
   componentDidMount() {
-    const user = firebase.auth().currentUser;
+    const user = getFirebaseUser();
 
     this.setState({
       userName: user.displayName,
@@ -68,57 +97,24 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    const { isInEditMode, userName, email, photoURL } = this.state;
+    const { isInEditMode, snackbarMessage } = this.state;
 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.backgroundDarkFilter}>
           <View style={styles.container}>
-            {isInEditMode ? (
-              <React.Fragment>
-                <TouchableWithoutFeedback onPress={this.uploadPhoto}>
-                  <View>
-                    <Image
-                      source={photoURL ? { uri: photoURL } : emptyImage}
-                      style={styles.avatar}
-                    />
-                    <Icon
-                      style={styles.selectImageIcon}
-                      name="upload"
-                      size={25}
-                      color="black"
-                    />
-                  </View>
-                </TouchableWithoutFeedback>
-                <TextInput
-                  style={styles.titleInput}
-                  value={userName}
-                  onChangeText={value => this.handleChange("userName", value)}
-                />
-                <TextInput
-                  style={styles.subtitleInput}
-                  value={email}
-                  onChangeText={value => this.handleChange("email", value)}
-                />
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <Image
-                  source={photoURL ? { uri: photoURL } : emptyImage}
-                  style={styles.avatar}
-                />
-                <Text style={styles.title}>{userName}</Text>
-                <Text style={styles.subtitle}>{email}</Text>
-              </React.Fragment>
-            )}
+            {this.renderProfileContent(isInEditMode, {
+              userName,
+              email,
+              photoURL,
+            })}
           </View>
           <TransparentButton
             style={styles.editButton}
             text={isInEditMode ? "Save profile" : "Edit profile"}
-            onPress={
-              isInEditMode ? this.handleSaveProfile : this.handleEditButtonPress
-            }
+            onPress={isInEditMode ? this.handleSaveProfile : this.handleEditButtonPress}
           />
+          <ErrorSnackbar message={snackbarMessage} onDismiss={this.handleErrorAppear} />
         </View>
       </ImageBackground>
     );

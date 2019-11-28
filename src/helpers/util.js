@@ -1,3 +1,4 @@
+import { Platform, PlatformIOSStatic } from "react-native";
 import RNFetchBlob from "react-native-fetch-blob";
 import ImagePicker from "react-native-image-picker";
 
@@ -13,33 +14,30 @@ window.fetch = new RNFetchBlob.polyfill.Fetch({
 }).build();
 
 // Uploads image file to firebase storage
-export const uploadImageToFirebase = (uri, mime = "image/jpeg", fileName) =>
-  new Promise((resolve, reject) => {
-    let uploadBlob = null;
+export const uploadImageToFirebase = async (
+  uri,
+  mime = "image/jpeg",
+  fileName
+) => {
+  let uploadBlob = null;
 
-    const uploadUri = Platform.OS === "ios" ? uri.replace("file://", "") : uri;
+  const uploadUri =
+    Platform.OS == PlatformIOSStatic.OS ? uri.replace("file://", "") : uri;
 
-    const imageRef = firebase.storage().ref(`/images/${fileName}`);
+  const imageRef = firebase.storage().ref(`/images/${fileName}`);
 
-    fs.readFile(uploadUri, "base64")
-      .then(data => {
-        return Blob.build(data, { type: `${mime};BASE64` });
-      })
-      .then(blob => {
-        uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime, name: fileName });
-      })
-      .then(() => {
-        uploadBlob.close();
-        return imageRef.getDownloadURL();
-      })
-      .then(url => {
-        resolve(url);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+  return fs
+    .readFile(uploadUri, "base64")
+    .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+    .then(blob => {
+      uploadBlob = blob;
+      return imageRef.put(blob, { contentType: mime, name: fileName });
+    })
+    .then(() => {
+      uploadBlob.close();
+      return imageRef.getDownloadURL();
+    });
+};
 
 export const uploadPhotoFromGallery = () =>
   new Promise((resolve, reject) => {
@@ -53,6 +51,8 @@ export const uploadPhotoFromGallery = () =>
         }
 
         reject(photo.error);
-      },
+      }
     );
   });
+
+export const getFirebaseUser = () => firebase.auth().currentUser;
