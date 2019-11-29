@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
-import { Appbar, Snackbar } from "react-native-paper";
+import { View, Button, Image, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import { Appbar } from "react-native-paper";
 import { NavigationActions } from "react-navigation";
 
 import AddingInput from "../components/AddingInput";
@@ -9,6 +9,7 @@ import ErrorSnackbar from "../components/ErrorSnackbar";
 import { validateText } from "../helpers/validators";
 import ROUTES from "../consts/routes";
 import API from "../helpers/api";
+import { uploadImageToFirebase, uploadPhotoFromGallery } from "../helpers/util";
 
 class Adding extends React.Component {
   constructor(props) {
@@ -74,12 +75,19 @@ class Adding extends React.Component {
     return errors;
   };
 
-  handleErrorAppear = () => {
-    this.setState({ errorMessage: "" });
+  handleErrorAppear = message => {
+    this.setState({ errorMessage: message });
+  };
+
+  handleUploadImage = () => {
+    uploadPhotoFromGallery()
+      .then(photo => uploadImageToFirebase(photo.uri, "image/jpeg", photo.fileName))
+      .then(url => this.setState({ image: url }))
+      .catch(error => handleErrorAppear(error.message));
   };
 
   handleSubmitPress = async () => {
-    const { name, quantity, department, producer, market_adress } = this.state;
+    const { name, quantity, department, producer, market_adress, image } = this.state;
 
     const errors = this.validateInputs();
     this.setState({ errors });
@@ -95,6 +103,7 @@ class Adding extends React.Component {
         department,
         producer,
         market_adress,
+        image,
       });
 
       this.props.navigation.navigate(ROUTES.LIST, { shouldUpdate: true });
@@ -162,6 +171,8 @@ class Adding extends React.Component {
               onValueChange={this.handleValueChange}
               errorMessage={errors.market_adress}
             />
+            <Button title="Upload image" onPress={this.handleUploadImage} />
+            {!!image && <Image style={{ width: 70, height: 100 }} source={{ uri: image }} />}
             <View style={styles.bottom}>
               {isLoading ? (
                 <ActivityIndicator color="#fff" size="large" />

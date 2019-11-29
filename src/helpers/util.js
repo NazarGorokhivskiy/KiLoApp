@@ -14,15 +14,10 @@ window.fetch = new RNFetchBlob.polyfill.Fetch({
 }).build();
 
 // Uploads image file to firebase storage
-export const uploadImageToFirebase = async (
-  uri,
-  mime = "image/jpeg",
-  fileName
-) => {
+export const uploadImageToFirebase = async (uri, mime = "image/jpeg", fileName) => {
   let uploadBlob = null;
 
-  const uploadUri =
-    Platform.OS == "ios" ? uri.replace("file://", "") : uri;
+  const uploadUri = Platform.OS == "ios" ? uri.replace("file://", "") : uri;
 
   const imageRef = firebase.storage().ref(`/images/${fileName}`);
 
