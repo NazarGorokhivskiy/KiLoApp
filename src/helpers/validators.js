@@ -5,10 +5,10 @@ export const validateEmail = value => {
       '|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.',
       "[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+",
       "[a-zA-Z]{2,}))$",
-    ].join(""),
+    ].join("")
   );
 
-  return emailRegex.test(value);
+  return emailRegex.test(value.replace(" ", ""));
 };
 
 export const validatePassword = value => {

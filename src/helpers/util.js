@@ -22,7 +22,7 @@ export const uploadImageToFirebase = async (
   let uploadBlob = null;
 
   const uploadUri =
-    Platform.OS == PlatformIOSStatic.OS ? uri.replace("file://", "") : uri;
+    Platform.OS == "ios" ? uri.replace("file://", "") : uri;
 
   const imageRef = firebase.storage().ref(`/images/${fileName}`);
 

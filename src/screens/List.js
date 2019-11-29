@@ -1,8 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Appbar, Snackbar, FAB } from "react-native-paper";
+import { Appbar, FAB } from "react-native-paper";
 
 import PanelsList from "../components/PanelsList";
+import ErrorSnackbar from "../components/ErrorSnackbar";
 import firebase from "../config/fbConfig";
 import ROUTES from "../consts/routes";
 
@@ -25,8 +26,7 @@ export default class List extends React.Component {
     }
   };
 
-  handleOpenPanelDetails = panel =>
-    this.props.navigation.navigate(ROUTES.DETAILS, { panel });
+  handleOpenPanelDetails = panel => this.props.navigation.navigate(ROUTES.DETAILS, { panel });
 
   handleAdd = () => this.props.navigation.navigate(ROUTES.ADDING);
 
@@ -46,16 +46,7 @@ export default class List extends React.Component {
           handleOpenPanelDetails={this.handleOpenPanelDetails}
         />
         <FAB style={styles.fab} icon="plus" onPress={this.handleAdd} />
-        <Snackbar
-          visible={!!snackbarMessage}
-          onDismiss={() => this.handleErrorAppear("")}
-          duration={5000}
-          action={{
-            label: "Okay",
-            onPress: () => this.handleErrorAppear(""),
-          }}>
-          {snackbarMessage}
-        </Snackbar>
+        <ErrorSnackbar message={snackbarMessage} onDismiss={() => this.handleErrorAppear("")} />
       </View>
     );
   }

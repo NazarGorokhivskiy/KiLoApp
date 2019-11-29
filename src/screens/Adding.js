@@ -1,16 +1,11 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { Appbar, Snackbar } from "react-native-paper";
 import { NavigationActions } from "react-navigation";
 
 import AddingInput from "../components/AddingInput";
 import TransparentButton from "../components/TransparentButton";
+import ErrorSnackbar from "../components/ErrorSnackbar";
 import { validateText } from "../helpers/validators";
 import ROUTES from "../consts/routes";
 import API from "../helpers/api";
@@ -77,6 +72,10 @@ class Adding extends React.Component {
     }
 
     return errors;
+  };
+
+  handleErrorAppear = () => {
+    this.setState({ errorMessage: "" });
   };
 
   handleSubmitPress = async () => {
@@ -176,16 +175,7 @@ class Adding extends React.Component {
             </View>
           </View>
         </ScrollView>
-        <Snackbar
-          visible={!!errorMessage}
-          onDismiss={() => this.setState({ errorMessage: "" })}
-          duration={5000}
-          action={{
-            label: "Okay",
-            onPress: () => this.setState({ errorMessage: "" }),
-          }}>
-          {errorMessage}
-        </Snackbar>
+        <ErrorSnackbar message={errorMessage} onDismiss={this.handleErrorAppear} />
       </View>
     );
   }

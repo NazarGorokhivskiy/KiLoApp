@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Snackbar } from "react-native-paper";
 
 import TransparentButton from "../components/TransparentButton";
 import emptyImage from "../images/empty.jpg";
@@ -37,7 +36,7 @@ export default class Profile extends React.Component {
       .then(() => {
         this.setState({ photoURL: getFirebaseUser().photoURL });
       })
-      .catch(() => handleErrorAppear(console.error));
+      .catch(this.handleErrorAppear);
   };
 
   handleInputChange = (name, value) => this.setState({ [name]: value });
@@ -57,7 +56,9 @@ export default class Profile extends React.Component {
     this.setState({ snackbarMessage: message });
   };
 
-  renderProfileContent = (isInEditMode, { userName, email, photoURL }) => {
+  renderProfileContent = isInEditMode => {
+    const { userName, email, photoURL } = this.state;
+
     return isInEditMode ? (
       <React.Fragment>
         <TouchableWithoutFeedback onPress={this.uploadPhoto}>
@@ -102,13 +103,7 @@ export default class Profile extends React.Component {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.backgroundDarkFilter}>
-          <View style={styles.container}>
-            {this.renderProfileContent(isInEditMode, {
-              userName,
-              email,
-              photoURL,
-            })}
-          </View>
+          <View style={styles.container}>{this.renderProfileContent(isInEditMode)}</View>
           <TransparentButton
             style={styles.editButton}
             text={isInEditMode ? "Save profile" : "Edit profile"}
