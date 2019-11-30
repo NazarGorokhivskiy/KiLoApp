@@ -50,14 +50,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff3",
     paddingHorizontal: 10,
-    borderRadius: 25,
+    borderRadius: 5,
   },
 
   input: {
     height: 48,
     flex: 1,
-    marginLeft: 8,
-    fontSize: 16,
+    fontSize: 18,
     color: "#fff",
   },
 

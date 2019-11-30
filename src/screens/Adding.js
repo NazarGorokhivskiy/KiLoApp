@@ -83,7 +83,7 @@ class Adding extends React.Component {
     uploadPhotoFromGallery()
       .then(photo => uploadImageToFirebase(photo.uri, "image/jpeg", photo.fileName))
       .then(url => this.setState({ image: url }))
-      .catch(error => handleErrorAppear(error.message));
+      .catch(error => this.handleErrorAppear(error));
   };
 
   handleSubmitPress = async () => {

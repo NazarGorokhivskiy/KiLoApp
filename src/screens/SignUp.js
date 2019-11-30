@@ -1,16 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, ImageBackground } from "react-native";
+import { StyleSheet, View, Text, Image, ImageBackground, ActivityIndicator } from "react-native";
 
 import LoginButton from "../components/LoginButton";
 import InputWithValidation from "../components/InputWithValidation";
 import firebase from "../config/fbConfig";
 import bgImage from "../images/background.jpg";
 import logo from "../images/logo.png";
-import {
-  validateEmail,
-  validatePhoneNumber,
-  validatePassword,
-} from "../helpers/validators";
+import { validateEmail, validatePhoneNumber, validatePassword } from "../helpers/validators";
 import ROUTES from "../consts/routes";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -23,6 +19,7 @@ class SignUp extends React.Component {
       username: "",
       phoneNumber: "",
       password: "",
+      isLoading: false,
       errors: {},
     };
   }
@@ -72,14 +69,15 @@ class SignUp extends React.Component {
     }
 
     try {
-      const { user } = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
+      this.setState({ isLoading: true });
+      const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
 
       await user.updateProfile({ displayName: username });
 
       this.props.navigation.navigate(ROUTES.MAIN);
     } catch ({ message }) {
+      this.setState({ isLoading: false });
+
       alert(`Error: ${message}`);
     }
   };
@@ -89,7 +87,7 @@ class SignUp extends React.Component {
   };
 
   render() {
-    const { email, username, phoneNumber, password, errors } = this.state;
+    const { email, username, phoneNumber, password, isLoading, errors } = this.state;
 
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -133,7 +131,11 @@ class SignUp extends React.Component {
               />
             </View>
             <View style={styles.bottom}>
-              <LoginButton text="Sign up" onPress={this.handleSignUpPress} />
+              {isLoading ? (
+                <ActivityIndicator color="#fff" size="large" />
+              ) : (
+                <LoginButton text="Sign up" onPress={this.handleSignUpPress} />
+              )}
               <Text style={styles.formBottom}>
                 Already have an account?{" "}
                 <Text style={styles.refToSignIn} onPress={this.handleLinkPress}>

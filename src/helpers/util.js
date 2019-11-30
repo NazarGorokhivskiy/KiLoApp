@@ -1,4 +1,4 @@
-import { Platform, PlatformIOSStatic } from "react-native";
+import { Platform } from "react-native";
 import RNFetchBlob from "react-native-fetch-blob";
 import ImagePicker from "react-native-image-picker";
 
