@@ -131,7 +131,9 @@ class SignUp extends React.Component {
               />
             </View>
             <View style={styles.bottom}>
-              {isLoading ? (
+              {isLoading 
+                ? <ActivityIndicator color="#fff" size="large" />
+                : <LoginButton text="Sign up" onPress={this.handleSignUpPress} />}
                 <ActivityIndicator color="#fff" size="large" />
               ) : (
                 <LoginButton text="Sign up" onPress={this.handleSignUpPress} />
