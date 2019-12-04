@@ -28,7 +28,7 @@ class Adding extends React.Component {
     };
   }
 
-  handleValueChange = (name, value) => {
+  handleValueChange = (name, value) => this.setState({[name]: value});
     this.setState({
       [name]: value,
     });
